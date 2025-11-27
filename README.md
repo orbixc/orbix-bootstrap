@@ -26,7 +26,7 @@ You can install your node via i) a [single command script](#i-script-installatio
 To quickly get started with the latest testnet / mainnet, run the following command to automatically set up all dependencies and a full node / validator node:
 
 ```bash
-CHAIN_ID=carbon-1 # or: carbon-testnet-42069 for testnet
+CHAIN_ID=orbix-0 # or: orbix-testnet-42069 for testnet
 MONIKER=mynode    # choose a name for your node here
 FLAGS="-o"        # these flags set up a node with minimum validator requirements,
                   # use: "" for set up a non-validator node with no extra services
@@ -89,7 +89,7 @@ You can configure statesync a) via our [helper script](#a-helper-script), or b) 
 1. Find the latest block height and hash from a trusted RPC node:
 
     ```bash
-    curl -s https://tm-api.carbon.network:443/block | \
+    curl -s https://orbix-tm-api.carbon.network:443/block | \
       jq -r '.result.block.header.height'
     44949303
     ```
@@ -98,7 +98,7 @@ You can configure statesync a) via our [helper script](#a-helper-script), or b) 
 
 
     ```bash
-    curl -s https://tm-api.carbon.network:443/block?height=44940000 | \
+    curl -s https://orbix-tm-api.carbon.network:443/block?height=44940000 | \
       jq -r '.result.block.header.height + "\n" + .result.block_id.hash'
     44940000
     F6C9A8590E4F4C2D1669AF759FCF99E8097981B18067B49E507A360F46B78F0C
@@ -109,7 +109,7 @@ You can configure statesync a) via our [helper script](#a-helper-script), or b) 
     ```toml
     [statesync]
     enable = true
-    rpc_servers = "https://tm-api.carbon.network:443,https://rpc.carbon.blockhunters.org:443"
+    rpc_servers = "https://orbix-tm-api.carbon.network:443,https://orbix-tm-api.carbon.network:443"
     trust_height = 44940000
     trust_hash = "F6C9A8590E4F4C2D1669AF759FCF99E8097981B18067B49E507A360F46B78F0C"
     ```

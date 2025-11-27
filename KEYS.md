@@ -35,7 +35,7 @@ ii) a separate oracle subaccount key (hot) that signs oracle vote transactions i
 
     ```bash
     carbond tx staking create-validator --amount 100000000000swth --commission-max-change-rate "0.025" --commission-max-rate "0.20" --commission-rate "0.05" --details "Some details about your validator" --from val --pubkey='PublicKeyFromStep1' --moniker "NameForYourValidator" --min-self-delegation "1" --fees 100000000swth --gas 300000 --chain-id <chain_id> --keyring-backend file
-    # add --node="https://tm-api.carbon.network:443" if using a separate machine
+    # add --node="https://orbix-tm-api.carbon.network:443" if using a separate machine
     ```
 
 ## Create oracle subaccount key (Remote signing only)
