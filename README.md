@@ -1,16 +1,16 @@
-# Carbon Bootstrap
+# Orbix Bootstrap
 
-This repo collects the genesis and configuration files for the various Carbon testnets / mainnets. It exists so the main Carbon repo does not get bogged down with large genesis files and status updates. This repo also contains scripts which allow bootstrapping or upgrading validators into a Carbon network in various recommended configurations easily.
+This repo collects the genesis and configuration files for the various Orbix testnets / mainnets. It exists so the main Orbix repo does not get bogged down with large genesis files and status updates. This repo also contains scripts which allow bootstrapping or upgrading validators into a Orbix network in various recommended configurations easily.
 
 ## Network Status
 
-Latest testnet: [carbon-testnet-42069](./carbon-testnet-42069/genesis.json)
+Latest testnet: [orbix-testnet-42069](./orbix-testnet-42069/genesis.json)
 
-Latest mainnet: [carbon-1](./carbon-1/genesis.json)
+Latest mainnet: [orbix-0](./orbix-0/genesis.json)
 
 ## Getting Started
 
-You will need to perform these steps to get a Carbon node up and running:
+You will need to perform these steps to get a Orbix node up and running:
 
 1. [Install your node binary](#1-installation)
 2. [Configure validator keys](#2-configure-validator-keys)

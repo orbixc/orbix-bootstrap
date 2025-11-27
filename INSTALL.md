@@ -13,44 +13,6 @@ sudo apt-get update
 sudo apt-get install build-essential jq cmake perl -y
 ```
 
-## Install cleveldb
-
-Download and install leveldb v1.23:
-
-```bash
-wget https://github.com/google/leveldb/archive/1.23.tar.gz && \
-  tar -zxvf 1.23.tar.gz && \
-  wget https://github.com/google/googletest/archive/release-1.11.0.tar.gz && \
-  tar -zxvf release-1.11.0.tar.gz && \
-  mv googletest-release-1.11.0/* leveldb-1.23/third_party/googletest && \
-
-  wget https://github.com/google/benchmark/archive/v1.5.5.tar.gz && \
-  tar -zxvf v1.5.5.tar.gz && \
-  mv benchmark-1.5.5/* leveldb-1.23/third_party/benchmark && \
-
-  cd leveldb-1.23 && \
-  mkdir -p build && \
-
-  cd build && \
-  cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .. && \
-  cmake --build . && \
-  sudo cp -P libleveldb.so* /usr/local/lib/ && \
-  sudo ldconfig && \
-  cd .. && \
-
-  sudo cp -r include/leveldb /usr/local/include/ && \
-  cd .. && \
-
-  rm -rf benchmark-1.5.5/ && \
-  rm -f v1.5.5.tar.gz && \
-
-  rm -rf googletest-release-1.11.0/ && \
-  rm -f release-1.11.0.tar.gz && \
-
-  rm -rf leveldb-1.23/ && \
-  rm -f 1.23.tar.gz
-```
-
 ## Install Carbon
 
 Download and unzip binaries:
@@ -89,7 +51,7 @@ First, initialize the node with your node's moniker. Note Monikers can contain o
 
 ```bash
 # Init with your node moniker
-carbond init <moniker>
+carbond init <moniker> --chain-id orbix-0
 ```
 
 You can edit this moniker later, in the ~/.carbon/config/config.toml file:
@@ -108,9 +70,17 @@ sed -i 's#cors_allowed_origins = \[\]#cors_allowed_origins = \["*"\]#g' ~/.carbo
 sed -i 's#laddr = "tcp:\/\/127.0.0.1:26657"#laddr = "tcp:\/\/0.0.0.0:26657"#g' ~/.carbon/config/config.toml
 sed -i 's#addr_book_strict = true#addr_book_strict = false#g' ~/.carbon/config/config.toml
 sed -i 's#db_backend = ".*"#db_backend = "goleveldb"#g' ~/.carbon/config/config.toml
-sed -i 's#enable = false#enable = true#g' ~/.carbon/config/app.toml
 sed -i 's#log_level = "info"#log_level = "warn"#g' ~/.carbon/config/config.toml
-# prune every 10 blocks, keeping 100 blocks and every 10,000th block
+
+# App configuration
+sed -i 's#enable = false#enable = true#g' ~/.carbon/config/app.toml
+sed -i 's#address = "tcp:\/\/localhost:1317"#address = "tcp:\/\/0.0.0.0:1317"#g' ~/.carbon/config/app.toml
+sed -i 's#swagger = false#swagger = true#g' ~/.carbon/config/app.toml
+sed -i -e 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' ~/.carbon/config/app.toml
+sed -i -e 's/address = "127.0.0.1:8545"/address = "0.0.0.0:8545"/g' ~/.carbon/config/app.toml
+sed -i -e 's/ws-address = "127.0.0.1:8546"/ws-address = "0.0.0.0:8546"/g' ~/.carbon/config/app.toml
+
+# Pruning settings
 sed -i 's#pruning = "default"#pruning = "custom"#g' ~/.carbon/config/app.toml
 sed -i 's#pruning-keep-recent = "0"#pruning-keep-recent = "100"#g' ~/.carbon/config/app.toml
 sed -i 's#pruning-keep-every = "0"#pruning-keep-every = "10000"#g' ~/.carbon/config/app.toml
@@ -118,14 +88,14 @@ sed -i 's#pruning-interval = "0"#pruning-interval = "10"#g' ~/.carbon/config/app
 sed -i 's#snapshot-interval = 0#snapshot-interval = 10000#g' ~/.carbon/config/app.toml
 ```
 
-### Add seed nodes
+### Add peers
 
-Your node needs to know how to find peers. You'll need to add healthy seed nodes to `$HOME/.carbon/config/config.toml`.
+Your node needs to know how to find peers. You'll need to add healthy peers to `$HOME/.carbon/config/config.toml`.
 
 ```bash
-PEERS="d93ed6a1f43dd0904dc5e2ab8680d4049b057b17@13.215.17.91:26656,70581c625fc1933bc273ca7a8d5e9ded3d1bcc97@13.213.113.113:26656,e3f02a9f3ca22724b3a67bba9183113645c9c7d9@54.179.11.177:26656" # example carbon-1 mainnet initial peers
+PEERS="24977415b314bcfa9316ec407c6f7f4831b52f86@203.118.10.75:40001,f808be516cb54e34dc9c69ed9624b752b6b509ba@203.118.10.75:40101"
 
-sed -i '/seeds =/c\seeds = "'"$PEERS"'"' ~/.carbon/config/config.toml
+sed -i 's#^persistent_peers =.*#persistent_peers = "'$PEERS'"#g' ~/.carbon/config/config.toml
 ```
 
 ### Configure Oracle SSL cert
@@ -186,19 +156,8 @@ sudo service postgresql restart
 Download the genesis file for the chain you are setting up:
 
 ```bash
-wget -O ~/.carbon/config/genesis.json https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/<chain-id>/genesis.json
-```
-
-Alternatively, if migrating from a pre-stargate chain (e.g. from `switcheo-tradehub-1` to `carbon-1`), export from your pre-stargate node and run the Stargate migrate command:
-
-```bash
-switcheoctl stop
-switcheod node export > genesis.json
-carbond migrate genesis.json --chain-id <chain-id> > carbon-genesis.json
-mv carbon-genesis.json ~/.carbon/config/genesis.json
-# check hash:
-openssl sha256 ~/.carbon/config/genesis.json
-# <hash> => TODO
+RPC_URL="https://orbix-tm-api.carbon.network"
+curl -sSf "$RPC_URL/genesis" | jq '.result.genesis' > ~/.carbon/config/genesis.json
 ```
 
 If running an off-chain data node, setup the database with initial tables and genesis data:
@@ -210,6 +169,22 @@ createdb -U postgres carbon
 POSTGRES_DB=carbon POSTGRES_USER=postgres carbond migrations
 # import genesis data
 POSTGRES_DB=carbon POSTGRES_USER=postgres carbond persist-genesis
+```
+
+## State Sync
+
+You can sync your node using state sync to catch up quickly.
+
+```bash
+SNAP_RPC="https://orbix-tm-api.carbon.network:443"
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
+TRUST_HEIGHT=$((LATEST_HEIGHT / 10000 * 10000))
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$TRUST_HEIGHT" | jq -r .result.block_id.hash)
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$TRUST_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.carbon/config/config.toml
 ```
 
 ## Background supervision with `systemd`
