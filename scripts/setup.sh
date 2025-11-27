@@ -189,6 +189,17 @@ echo "---- Downloading and initializing"
 
 ./$DAEMON init $MONIKER
 
+echo "---- Initialising genesis data"
+
+RPC_URL=
+GENESIS_PATH="$HOME/.carbon/config/genesis.json"
+case "$NETWORK" in
+    "mainnet") RPC_URL="https://orbix-tm-api.carbon.network" ;;
+    "testnet") RPC_URL="https://test-orbix-tm-api.carbon.network" ;;
+    *) echo "Unknown network"; exit 1 ;;
+esac
+curl -sSf "$RPC_URL/genesis" | jq '.result.genesis' > "$GENESIS_PATH"
+
 echo "---- Setting node configuration"
 
 sed -i 's#timeout_commit = "5s"#timeout_commit = "1s"#g' ~/.carbon/config/config.toml
@@ -208,7 +219,7 @@ sed -i 's#snapshot-interval = 0#snapshot-interval = 10000#g' ~/.carbon/config/ap
 if [ "$SETUP_API" = true ]; then
   sed -i 's#enable = false#enable = true#g' ~/.carbon/config/app.toml                                       # enable all apis
   sed -i 's#swagger = false#swagger = true#g' ~/.carbon/config/app.toml                                     # enable swagger endpoint
-  sed -i -e 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' ~/.carbon/config/app.toml            # enable grpc-web-unsafe-cors
+  sed -i -e 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' ~/.carbon/config/app.toml          # enable grpc-web-unsafe-cors
   sed -i -e 's/address = "127.0.0.1:8545"/address = "0.0.0.0:8545"/g' ~/.carbon/config/app.toml             # configure evm json-rpc to listen on all network interface
   sed -i -e 's/ws-address = "127.0.0.1:8546"/ws-address = "0.0.0.0:8546"/g' ~/.carbon/config/app.toml       # configure evm json-rpc websocket to listen on all network interface
 fi
