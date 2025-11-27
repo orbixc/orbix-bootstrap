@@ -56,10 +56,10 @@ wget https://github.com/google/leveldb/archive/1.23.tar.gz && \
 Download and unzip binaries:
 
 ```bash
-VERSION=$(curl -s https://api.github.com/repos/Switcheo/carbon-bootstrap/releases/latest | jq -r .tag_name)
+VERSION=$(curl -s https://api.github.com/repos/orbixc/orbix-bootstrap/releases/latest | jq -r .tag_name)
 NETWORK=mainnet
 ARCH=$(dpkg --print-architecture)
-wget https://github.com/Switcheo/carbon-bootstrap/releases/download/v${VERSION}/carbond${VERSION}-${NETWORK}.linux-${ARCH}.tar.gz
+wget https://github.com/orbixc/orbix-bootstrap/releases/download/v${VERSION}/carbond${VERSION}-${NETWORK}.linux-${ARCH}.tar.gz
 tar -xvf carbond${VERSION}-${NETWORK}.linux-${ARCH}.tar.gz
 sudo mv carbond /usr/local/bin
 rm carbon${VERSION}.linux-${ARCH}.tar.gz
@@ -136,7 +136,7 @@ If you are running a validator, you will need to generate SSL certificates that 
 VALIDATOR_NODE_IP_ADDRESS="127.0.0.1"
 ORACLE_SERVICE_NODE_IP_ADDRESS="127.0.0.1"
 CARBON_HOME_PATH="~/.carbon"
-URL=https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/cert.sh
+URL=https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/cert.sh
 bash <(wget -O - $URL) $VALIDATOR_NODE_IP_ADDRESS $ORACLE_SERVICE_NODE_IP_ADDRESS $CARBON_HOME_PATH
 ```
 
@@ -149,7 +149,7 @@ Create the required folder and move the `carbond` binary into it:
 ```bash
 ARCH=$(dpkg --print-architecture)
 MINOR=$(perl -pe 's/(?<=\d\.\d{1,2}\.)\d{1,2}/0/g' <<< $VERSION)
-wget https://github.com/Switcheo/carbon-bootstrap/releases/download/cosmovisor%2Fv1.0.0/cosmovisor1.0.0.linux-${ARCH}.tar.gz
+wget https://github.com/orbixc/orbix-bootstrap/releases/download/cosmovisor%2Fv1.0.0/cosmovisor1.0.0.linux-${ARCH}.tar.gz
 tar -xvf cosmovisor1.0.0.linux-${ARCH}.tar.gz
 sudo mv cosmovisor /usr/local/bin
 
@@ -186,7 +186,7 @@ sudo service postgresql restart
 Download the genesis file for the chain you are setting up:
 
 ```bash
-wget -O ~/.carbon/config/genesis.json https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/<chain-id>/genesis.json
+wget -O ~/.carbon/config/genesis.json https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/<chain-id>/genesis.json
 ```
 
 Alternatively, if migrating from a pre-stargate chain (e.g. from `switcheo-tradehub-1` to `carbon-1`), export from your pre-stargate node and run the Stargate migrate command:

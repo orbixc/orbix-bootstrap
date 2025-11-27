@@ -133,14 +133,14 @@ if [ "$SETUP_API" = true ] || [ "$SETUP_ORACLE" = true ] || [ "$SETUP_LIQUIDATOR
 fi
 
 # Install dependencies, jq required for setting $VERSION
-bash <(wget -O - https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/install-deps.sh) $DEP_FLAGS
+bash <(wget -O - https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/install-deps.sh) $DEP_FLAGS
 
 DAEMON=carbond
 CHAIN_ID=${@:$OPTIND:1}
 MONIKER=${@:$OPTIND+1:1}
-CHAIN_CONFIG_URL=https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/${CHAIN_ID}
-CHAIN_MEDIA_URL=https://media.githubusercontent.com/media/Switcheo/carbon-bootstrap/master/${CHAIN_ID}
-VERSION=$(curl -s https://api.github.com/repos/Switcheo/carbon-bootstrap/releases/latest | jq -r .tag_name)
+CHAIN_CONFIG_URL=https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/${CHAIN_ID}
+CHAIN_MEDIA_URL=https://media.githubusercontent.com/media/orbixc/orbix-bootstrap/master/${CHAIN_ID}
+VERSION=$(curl -s https://api.github.com/repos/orbixc/orbix-bootstrap/releases/latest | jq -r .tag_name)
 VERSION=${VERSION:1}
 NETWORK=$(wget -qO- $CHAIN_CONFIG_URL/NETWORK)
 ARCH=$(dpkg --print-architecture)
@@ -169,8 +169,8 @@ echo "-- Carbon Setup --"
 
 echo "-- Downloading carbond and cosmovisor"
 
-wget -c https://github.com/Switcheo/carbon-bootstrap/releases/download/v${VERSION}/carbond${VERSION}-${NETWORK}.linux-${ARCH}.tar.gz -O - | tar -xz
-wget -c https://github.com/Switcheo/carbon-bootstrap/releases/download/cosmovisor%2Fv1.0.0/cosmovisor1.0.0.linux-${ARCH}.tar.gz -O - | tar -xz
+wget -c https://github.com/orbixc/orbix-bootstrap/releases/download/v${VERSION}/carbond${VERSION}-${NETWORK}.linux-${ARCH}.tar.gz -O - | tar -xz
+wget -c https://github.com/orbixc/orbix-bootstrap/releases/download/cosmovisor%2Fv1.0.0/cosmovisor1.0.0.linux-${ARCH}.tar.gz -O - | tar -xz
 
 echo "-- Stopping any previous system service of carbond"
 
@@ -225,7 +225,7 @@ sudo ln -s ~/.carbon/cosmovisor/current/bin/carbond /usr/local/bin/carbond
 
 if [ "$SETUP_ORACLE" = true ]; then
   echo "-- Installing oracle SSL cert"
-  bash <(wget -O - https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/cert.sh) "127.0.0.1" "127.0.0.1" "~/.carbon"
+  bash <(wget -O - https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/cert.sh) "127.0.0.1" "127.0.0.1" "~/.carbon"
 fi
 
 # configure database strings

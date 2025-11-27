@@ -47,7 +47,7 @@ The following instructions is **ONLY** necessary if you are running a validator 
     #    pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AvSD0GfhaXK52g9omEn37WD2aOv+ntzLktloPnUtRQ0W"}'
     ```
 
-    **⚠️ If you have not created an oracle subaccount, follow the instructions [here](https://github.com/Switcheo/carbon-bootstrap/blob/master/KEYS.md#create-oracle-subaccount-key) to create one: ⚠️**
+    **⚠️ If you have not created an oracle subaccount, follow the instructions [here](https://github.com/orbixc/orbix-bootstrap/blob/master/KEYS.md#create-oracle-subaccount-key) to create one: ⚠️**
 
 4. Convert your oracle subaccount `address` in step 3 to hex:
 

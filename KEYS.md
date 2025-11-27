@@ -14,7 +14,7 @@ ii) a separate oracle subaccount key (hot) that signs oracle vote transactions i
       carbond tendermint show-validator
       ```
 
-2. On the machine(s) that you wish to install your keys, download and install the appropriate [release](https://github.com/Switcheo/carbon-bootstrap/releases).
+2. On the machine(s) that you wish to install your keys, download and install the appropriate [release](https://github.com/orbixc/orbix-bootstrap/releases).
 
 3. Create your validator operator key and password:
 

@@ -30,7 +30,7 @@ CHAIN_ID=carbon-1 # or: carbon-testnet-42069 for testnet
 MONIKER=mynode    # choose a name for your node here
 FLAGS="-o"        # these flags set up a node with minimum validator requirements,
                   # use: "" for set up a non-validator node with no extra services
-URL=https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/setup.sh
+URL=https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/setup.sh
 bash <(wget -O - $URL) $FLAGS $CHAIN_ID $MONIKER
 ```
 
@@ -49,7 +49,7 @@ You can do this using i) the [script below](#i-automatic-key-creation), or ii) [
 To install all required validator and subaccount keys directly on your validator node, run [scripts/create-keys.sh](./scripts/create-keys.sh):
 
 ```bash
-bash <(wget -O - https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/create-keys.sh)
+bash <(wget -O - https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/create-keys.sh)
 ```
 
 You'll need to fund your accounts and then run a few more commands to promote your node to a validator. Follow all instructions printed from the output of the above script carefully.
@@ -79,7 +79,7 @@ You can configure statesync a) via our [helper script](#a-helper-script), or b) 
 1. Execute the following script:
 
     ```bash
-    bash <(wget -O - https://raw.githubusercontent.com/Switcheo/carbon-bootstrap/master/scripts/configure-statesync.sh)
+    bash <(wget -O - https://raw.githubusercontent.com/orbixc/orbix-bootstrap/master/scripts/configure-statesync.sh)
     ```
 
 2. [Start your node](#4-starting-nodes) to begin statesync
@@ -139,11 +139,11 @@ tail -f /var/log/carbon/carbond*.out*
 To upgrade your node between non-consensus breaking versions (e.g. v2.1.0 to v2.1.1), stopping the node and swapping binaries is sufficient.
 
 ```bash
-VERSION=$(curl -s https://api.github.com/repos/Switcheo/carbon-bootstrap/releases/latest | jq -r .tag_name | cut -c 2-) # OR replace this with the version you want
+VERSION=$(curl -s https://api.github.com/repos/orbixc/orbix-bootstrap/releases/latest | jq -r .tag_name | cut -c 2-) # OR replace this with the version you want
 MINOR=$(perl -pe 's/(?<=\d\.\d{1,2}\.)\d{1,2}/0/g' <<< $VERSION) # if you do not have perl >=5.30, replace this with `MINOR=x.x.0`. e.g. `VERSION=2.1.1`, `MINOR=2.1.0`.
 NETWORK=mainnet
 FILE=carbond${VERSION}-${NETWORK}.linux-$(dpkg --print-architecture).tar.gz
-wget https://github.com/Switcheo/carbon-bootstrap/releases/download/v${VERSION}/${FILE}
+wget https://github.com/orbixc/orbix-bootstrap/releases/download/v${VERSION}/${FILE}
 tar -xvf ${FILE}
 rm ${FILE}
 sudo service carbond stop
